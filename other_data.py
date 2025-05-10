@@ -45,7 +45,7 @@ def generate_gender_data(num_samples=400, male_ratio=0.5):
 
     np.random.shuffle(data)
 
-    return data # массив, в котором по столбцам рост, вес и пол
+    return data  # массив, в котором по столбцам рост, вес и пол
 
 
 def main():

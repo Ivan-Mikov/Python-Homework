@@ -11,6 +11,7 @@ class ShapeMismatchError(Exception):
 class AxisNames(StrEnum):
     X = "x"
     Y = "y"
+    Z = "z"
 
 
 class DiagramTypes(StrEnum):
@@ -75,7 +76,7 @@ def visualize_distribution(
     plt.style.use("ggplot")
 
     n = points.shape[0]
-    if points.shape != (n, 2):
+    if points.shape != (n, 2) and points.shape != (n, 3):
         raise ShapeMismatchError("Invalid points")
 
     types = diagram_type if isinstance(diagram_type, list) else [diagram_type]
@@ -88,16 +89,24 @@ def visualize_distribution(
     )
 
     axes = [axs] if isinstance(axs, plt.Axes) else axs.flatten()
-    data = {
-        AxisNames.X: points[:, 0],
-        AxisNames.Y: points[:, 1]
-    }
+
+    if len(coords) == 2:
+        data = {
+            AxisNames.X: points[:, 0],
+            AxisNames.Y: points[:, 1]
+        }
+    else:
+        data = {
+            AxisNames.X: points[:, 0],
+            AxisNames.Y: points[:, 1],
+            AxisNames.Z: points[:, 2]
+        }
 
     for i, type in enumerate(types):
         for j, coord in enumerate(coords):
             vizual_axis(data[coord], axes[len(coords) * i + j], type)
             if i == 0:
-                axes[len(coords) * i + j].set_title("X" if coord == AxisNames.X else "Y")
+                axes[len(coords) * i + j].set_title(str(coord))
 
     if (path_to_save):
         plt.savefig(path_to_save)

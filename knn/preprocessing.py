@@ -35,8 +35,8 @@ def train_test_split(
     union_data = np.column_stack((features, targets))
     if shuffle:
         np.random.shuffle(union_data)
-        features = union_data[:, :2]
-        targets = union_data[:, 2]
+        features = union_data[:, :features.shape[1]]
+        targets = union_data[:, features.shape[1]]
 
     train_mask = []
     test_mask = []
